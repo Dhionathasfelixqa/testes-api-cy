@@ -1,45 +1,38 @@
-/// <reference types="cypress" />
 import { faker } from '@faker-js/faker'
+faker.locale = 'pt_BR'
+
+import contratoUser from '../contracts/usuario.contract'
 
 describe('Testes da Funcionalidade Usuários', () => {
   it('Deve validar contrato de usuários', () => {
-    //TODO:
+    cy.request('usuarios').then(response => {
+      return contratoUser.validateAsync(response.body)
+    })
   })
 
   it('Deve listar usuários cadastrados', () => {
-    //TODO:
     cy.request({ url: 'usuarios' })
   })
 
   it('Deve cadastrar um usuário com sucesso', () => {
-    //TODO:
-    cy.request({
-      method: 'POST',
-      url: 'usuarios',
-      body: {
-        nome: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: 'teste1',
-        administrador: 'false'
-      }
-    }).then(response => {
+    cy.cadUsuario(
+      faker.internet.userName(),
+      faker.internet.email(),
+      'teste123',
+      'false'
+    ).then(response => {
       expect(response.status).to.equal(201)
       expect(response.body.message).to.equal('Cadastro realizado com sucesso')
     })
   })
 
   it('Deve validar um usuário com email inválido', () => {
-    cy.request({
-      method: 'POST',
-      url: 'usuarios',
-      body: {
-        nome: faker.internet.userName(),
-        email: faker.internet.userName(),
-        password: 'teste1',
-        administrador: 'false'
-      },
-      failOnStatusCode: false
-    }).then(response => {
+    cy.cadUsuario(
+      faker.internet.userName(),
+      faker.internet.userName(),
+      'teste123',
+      'false'
+    ).then(response => {
       expect(response.status).to.equal(400)
       expect(response.body.email).to.equal('email deve ser um email válido')
     })
