@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar o repositorio') {
+            steps {
+                git branch: 'main', url: 'https://github.com/EBAC-QE/testes-e2e-ebac-shop.git'
+            }
+        }
+        stage('Instalar dependences') {
+            steps {
+                bat 'npm install'
+            }
+        }
+        stage('Executar os teste') {
+            steps {
+                bat 'npm run cy:run'
+            }
+        }
+    }
+}
