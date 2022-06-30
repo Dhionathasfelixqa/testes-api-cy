@@ -4,9 +4,12 @@ faker.locale = 'pt_BR'
 import contratoUser from '../contracts/usuario.contract'
 
 describe('Testes da Funcionalidade Usuários', () => {
-  it('Deve validar contrato de usuários', () => {
+  it.only('Deve validar contrato de usuários', () => {
     cy.request('usuarios').then(response => {
-      return contratoUser.validateAsync(response.body)
+      return (
+        contratoUser.validateAsync(response.body),
+        expect(response.status).to.equal(200)
+      )
     })
   })
 
