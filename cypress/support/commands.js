@@ -55,7 +55,7 @@ Cypress.Commands.add(
   }
 )
 
-Cypress.Commands.add('cadUsuario', (nome, email, senha, adm) => {
+Cypress.Commands.add('CadastroUsuario', (nome, email, senha, adm) => {
   cy.request({
     method: 'POST',
     url: 'usuarios',

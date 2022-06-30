@@ -11,11 +11,13 @@ describe('Testes da Funcionalidade Usuários', () => {
   })
 
   it('Deve listar usuários cadastrados', () => {
-    cy.request({ url: 'usuarios' })
+    cy.request({ url: 'usuarios' }).then(response => {
+      expect(response.status).to.equal(200)
+    })
   })
 
   it('Deve cadastrar um usuário com sucesso', () => {
-    cy.cadUsuario(
+    cy.CadastroUsuario(
       faker.internet.userName(),
       faker.internet.email(),
       'teste123',
@@ -27,7 +29,7 @@ describe('Testes da Funcionalidade Usuários', () => {
   })
 
   it('Deve validar um usuário com email inválido', () => {
-    cy.cadUsuario(
+    cy.CadastroUsuario(
       faker.internet.userName(),
       faker.internet.userName(),
       'teste123',
